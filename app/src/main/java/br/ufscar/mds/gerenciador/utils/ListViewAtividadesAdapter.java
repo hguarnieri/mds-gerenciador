@@ -1,6 +1,7 @@
 package br.ufscar.mds.gerenciador.utils;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,36 +42,25 @@ public class ListViewAtividadesAdapter extends BaseAdapter {
 
     public class Holder {
         TextView textViewTitle;
-        TextView textViewData;
+        TextView textViewDate;
         View viewCor;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder = new Holder();
-        View rowView;
-        rowView = inflater.inflate(R.layout.list_atividade_item, null);
+        View rowView = inflater.inflate(R.layout.list_atividade_item, null);
         holder.textViewTitle = (TextView) rowView.findViewById(R.id.list_atividade_item_titulo);
-        holder.textViewData = (TextView) rowView.findViewById(R.id.list_atividade_item_data);
-
+        holder.textViewDate = (TextView) rowView.findViewById(R.id.list_atividade_item_data);
         holder.viewCor = (View) rowView.findViewById(R.id.list_atividade_item_cor);
 
-        Random rand = new Random();
-        int cor = rand.nextInt(3);
-
-        switch (cor) {
-            case 0:
-                holder.viewCor.setBackgroundColor(rowView.getResources().getColor(R.color.red));
-                break;
-            case 1:
-                holder.viewCor.setBackgroundColor(rowView.getResources().getColor(R.color.blue));
-                break;
-            case 2:
-                holder.viewCor.setBackgroundColor(rowView.getResources().getColor(R.color.dark_green));
-        }
-
+        holder.textViewTitle.setText("Aqui Vai o Titulo da Atividade");
+        holder.textViewDate.setText("Aqui vai a data da atividade");
+        //Aqui vai a cor relacionada a atividade
+        holder.viewCor.setBackgroundColor(rowView.getResources().getColor(R.color.dark_green));
 
         return rowView;
     }
+
 
 }

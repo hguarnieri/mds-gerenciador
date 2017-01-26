@@ -3,4 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="openDrawer">Menu</string>
     <string name="closeDrawer">Menu</string>
+    <string name="about_title">Sobre</string>
+    <string name="about_message">App desenvolvido para a aula de MDS</string>
+    <string name="ok">OK</string>
 </resources>

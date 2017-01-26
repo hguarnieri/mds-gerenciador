@@ -14,12 +14,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,8 @@ import br.ufscar.mds.gerenciador.utils.SlidingTabLayout;
 
 public class MainActivity extends AppCompatActivity implements SlidingTabLayout.TabColorizer {
 
+    //TAG
+    private static final String TAG = "Gerenciador MDS";
     // Objetos que manipulam as tabs
     FragmentsAdapter mAdapter;
     ViewPager mPager;
@@ -73,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
             @Override
             public void onClick(View v) {
                 // Função vai aqui
-                System.out.println("Clicked");
+                Log.v(TAG,"Botão de login google clicado");
             }
         });
 
@@ -81,8 +85,13 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         buttonSobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Função vai aqui
-                System.out.println("Clicked");
+                //About Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.about_title)
+                        .setMessage(R.string.about_message)
+                        .setPositiveButton(R.string.ok,null)
+                        .create()
+                        .show();
             }
         });
     }
@@ -92,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         fab_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Nova atividade
+                //TODO (1) Adicionar nova atividade
             }
         });
 
@@ -99,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         fab_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO (2) Abrir camera para tirar nova foto
             }
         });
     }
