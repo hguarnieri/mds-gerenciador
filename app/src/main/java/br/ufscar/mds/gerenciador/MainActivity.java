@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
             public void onClick(View v) {
                 // Função vai aqui
                 Log.v(TAG,"Botão de login google clicado");
+                Intent googleLoginActivity = new Intent(MainActivity.this,CalendarAPIActivity.class);
+                startActivity(googleLoginActivity);
             }
         });
 
