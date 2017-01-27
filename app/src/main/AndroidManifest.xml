@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CalendarAPIActivity"
+            android:name=".CalendarConnectActivity"
             android:label="Google Calendar API Android Quickstart" >
 
         </activity>

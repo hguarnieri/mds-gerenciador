@@ -6,4 +6,10 @@
     <string name="about_title">Sobre</string>
     <string name="about_message">App desenvolvido para a aula de MDS</string>
     <string name="ok">OK</string>
+    <string name="no_connection">Sem conexão de Internet</string>
+    <string name="no_google_play">É preciso ter instalado Google Play Services</string>
+    <string name="calendar_title">Google Calendar</string>
+    <string name="calendar_about">Você pode conectar a sua conta para que suas atividades sejam adicionadas ao seu Google Calendar</string>
+    <string name="calendar_connect">Conectar Conta Google</string>
+    <string name="calendar_connected">Você já está conectado</string>
 </resources>
