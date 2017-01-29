@@ -29,32 +29,12 @@ public class ListViewAtividadesAdapter extends BaseAdapter {
 
     List<Atividade> atividadeList = new ArrayList<Atividade>();
 
-    public ListViewAtividadesAdapter(Context context) {
+    public ListViewAtividadesAdapter(Context context, List<Atividade> atividades) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (DbInterface.getAllFutureAssignments(context).size() == 0) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(new Date());
-            calendar.add(Calendar.DAY_OF_YEAR, 2);
 
-            Calendar calendar2 = Calendar.getInstance();
-            calendar2.setTime(new Date());
-            calendar2.add(Calendar.DAY_OF_YEAR, 6);
 
-            Calendar calendar3 = Calendar.getInstance();
-            calendar3.setTime(new Date());
-            calendar3.add(Calendar.DAY_OF_YEAR, 15);
-
-            Atividade atividade1 = new Atividade(1, 1, "Fazer o T1 de MDS", "Desenvolver as telas", calendar.getTime());
-            Atividade atividade2 = new Atividade(2, 1, "Fazer o T1 de CG", "Desenvolver o jogo", calendar2.getTime());
-            Atividade atividade3 = new Atividade(2, 1, "Fazer o T1 de Grafos", "Desenvolver os grafos", calendar3.getTime());
-
-            DbInterface.saveAssignment(context, atividade1);
-            DbInterface.saveAssignment(context, atividade2);
-            DbInterface.saveAssignment(context, atividade3);
-        }
-
-        atividadeList = DbInterface.getAllFutureAssignments(context);
+        this.atividadeList = atividades;
     }
 
     @Override

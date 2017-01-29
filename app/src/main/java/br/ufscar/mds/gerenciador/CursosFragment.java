@@ -1,5 +1,6 @@
 package br.ufscar.mds.gerenciador;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,17 +32,20 @@ public class CursosFragment extends Fragment {
             DbInterface.saveCourse(getContext(), curso3);
         }
 
-        List<Curso> courses = DbInterface.getAllCourses(getContext());
+        final List<Curso> courses = DbInterface.getAllCourses(getContext());
         View view = inflater.inflate(R.layout.view_cursos, container, false);
 
         ListView listViewCursos = (ListView) view.findViewById(R.id.list_view_cursos);
         listViewCursos.setAdapter(new ListViewCursosAdapter(getContext(), courses));
         listViewCursos.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int myItemInt, long l) {
-                //TODO Criar visualização da atividade e chamar ela
-                Log.v("CursosFragment","Selecionado o item: " + myItemInt);
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                Bundle b = new Bundle();
+                b.putInt("courseId", courses.get(pos).getId());
 
+                Intent i = new Intent(getActivity(), CursoActivity.class);
+                i.putExtras(b);
+                startActivity(i);
             }
         });
 

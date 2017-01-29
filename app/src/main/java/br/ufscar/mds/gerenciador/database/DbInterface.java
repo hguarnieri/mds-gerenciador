@@ -85,6 +85,7 @@ public class DbInterface {
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_NOME, course.getNome());
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1, course.getHorario1());
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2, course.getHorario2());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_ABSENCES, course.getAbsences());
 
         long newRowId = db.insert(GerenciadorContract.CursoEntry.TABLE_NAME, null, values);
 
@@ -108,6 +109,7 @@ public class DbInterface {
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_NOME, course.getNome());
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1, course.getHorario1());
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2, course.getHorario2());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_ABSENCES, course.getAbsences());
 
         // Parameters
         String   whereClause = GerenciadorContract.CursoEntry._ID + " = ?";
@@ -228,8 +230,8 @@ public class DbInterface {
     private static List<Semestre> getSemesters(Context context, Integer ano, Integer periodo) {
         List<Semestre> lista = new ArrayList<Semestre>();
 
-        AtividadeDbHelper dbHelper;
-        dbHelper = new AtividadeDbHelper(context);
+        SemestreDbHelper dbHelper;
+        dbHelper = new SemestreDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] tableColumns = {
@@ -285,16 +287,7 @@ public class DbInterface {
     }
 
     public static Curso getCourse(Context context, int courseId) {
-        List<Curso> cursos = getCourses(context, null, courseId);
-
-        if (cursos.size() == 1) {
-            return cursos.get(0);
-        } else if (cursos.size() >= 1) {
-            System.out.println("Erro! Mais de um curso com o mesmo id encontrado!");
-            return null;
-        } else {
-            return null;
-        }
+        return getCourses(context, null, courseId).get(0);
     }
 
     // Vamos manter privado para evitar erros, utilizar os métodos acima ou criar novos
@@ -316,7 +309,8 @@ public class DbInterface {
                 GerenciadorContract.CursoEntry.COLUMN_NAME_SEMESTRE_ID,
                 GerenciadorContract.CursoEntry.COLUMN_NAME_NOME,
                 GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1,
-                GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2
+                GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2,
+                GerenciadorContract.CursoEntry.COLUMN_NAME_ABSENCES
         };
 
         // Parameters
@@ -479,6 +473,7 @@ public class DbInterface {
         curso.setNome(cursor.getString(2));
         curso.setHorario1(cursor.getString(3));
         curso.setHorario2(cursor.getString(4));
+        curso.setAbsences(cursor.getInt(5));
 
         return curso;
     }

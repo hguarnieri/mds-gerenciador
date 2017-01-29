@@ -10,6 +10,7 @@ public class Curso {
     private String horario1;
     private String horario2;
     private int semestreId;
+    private int absences;
 
     public Curso() {
     }
@@ -70,5 +71,24 @@ public class Curso {
                 ", horario2='" + horario2 + '\'' +
                 ", semestreId=" + semestreId +
                 '}';
+    }
+
+
+    public void increaseAbsences() {
+        this.absences++;
+    }
+
+    public void decreaseAbsences() {
+        if (this.absences > 0) {
+            this.absences--;
+        }
+    }
+
+    public int getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(int absences) {
+        this.absences = absences;
     }
 }

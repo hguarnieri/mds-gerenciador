@@ -33,6 +33,11 @@
             android:label="Add Semester" >
 
         </activity>
+        <activity
+            android:name=".CursoActivity"
+            android:label="Course View" >
+
+        </activity>
     </application>
 
 </manifest>

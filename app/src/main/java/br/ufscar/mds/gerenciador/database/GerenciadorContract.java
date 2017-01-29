@@ -21,6 +21,7 @@ public class GerenciadorContract {
         public static final String COLUMN_NAME_NOME = "nome";
         public static final String COLUMN_NAME_HORARIO1 = "horario1";
         public static final String COLUMN_NAME_HORARIO2 = "horario2";
+        public static final String COLUMN_NAME_ABSENCES = "absences";
     }
 
     public static class AtividadeEntry implements BaseColumns {
