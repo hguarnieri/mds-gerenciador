@@ -19,4 +19,9 @@
     <string name="semester_term_hint">Período</string>
     <string name="semester_year_hint">Ano</string>
     <string name="semester_bt">Adicionar Semestre</string>
+    <string name="course_name_hint">Nome</string>
+    <string name="course_schedule1_hint">Horario Primeira Aula</string>
+    <string name="course_schedule2_hint">Horario Segunda Aula</string>
+    <string name="course_add_bt">Adicionar Curso</string>
+    <string name="add_course">Add Course</string>
 </resources>

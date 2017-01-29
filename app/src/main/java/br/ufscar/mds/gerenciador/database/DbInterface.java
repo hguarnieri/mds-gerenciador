@@ -228,8 +228,8 @@ public class DbInterface {
     private static List<Semestre> getSemesters(Context context, Integer ano, Integer periodo) {
         List<Semestre> lista = new ArrayList<Semestre>();
 
-        AtividadeDbHelper dbHelper;
-        dbHelper = new AtividadeDbHelper(context);
+        SemestreDbHelper dbHelper;
+        dbHelper = new SemestreDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] tableColumns = {
@@ -446,6 +446,7 @@ public class DbInterface {
     private static Atividade cursorToAtividade(Cursor cursor){
         Atividade atividade = new Atividade();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
         atividade.setId(cursor.getInt(0));
         atividade.setTitulo(cursor.getString(1));

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
+
+    <EditText
+        android:id="@+id/et_course_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:hint="@string/course_name_hint"
+        android:textAlignment="center"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/et_course_schedule1"
+        android:hint="@string/course_schedule1_hint"
+        android:textAlignment="center"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/et_course_schedule2"
+        android:hint="@string/course_schedule2_hint"
+        android:textAlignment="center"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sp_course_semesterid"/>
+
+    <Button
+        android:id="@+id/bt_course_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:textAlignment="center"
+        android:text="@string/course_add_bt"/>
+
+</LinearLayout>
