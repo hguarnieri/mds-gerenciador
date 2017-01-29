@@ -7,13 +7,13 @@ package br.ufscar.mds.gerenciador.data;
 public class Semestre {
     private int id;
     private String nome;
-    private String ano;
-    private String periodo;
+    private int ano;
+    private int periodo;
 
     public Semestre() {
     }
 
-    public Semestre(int id, String nome, String ano, String periodo) {
+    public Semestre(int id, String nome, int ano, int periodo) {
         this.id = id;
         this.nome = nome;
         this.ano = ano;
@@ -36,19 +36,19 @@ public class Semestre {
         this.nome = nome;
     }
 
-    public String getAno() {
+    public int getAno() {
         return ano;
     }
 
-    public void setAno(String ano) {
+    public void setAno(int ano) {
         this.ano = ano;
     }
 
-    public String getPeriodo() {
+    public int getPeriodo() {
         return periodo;
     }
 
-    public void setPeriodo(String periodo) {
+    public void setPeriodo(int periodo) {
         this.periodo = periodo;
     }
 }

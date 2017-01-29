@@ -9,6 +9,7 @@ public class Curso {
     private String nome;
     private String horario1;
     private String horario2;
+    private int semestreId;
 
     public Curso() {
     }
@@ -50,5 +51,13 @@ public class Curso {
 
     public void setHorario2(String horario2) {
         this.horario2 = horario2;
+    }
+
+    public int getSemestreId() {
+        return semestreId;
+    }
+
+    public void setSemestreId(int semestreId) {
+        this.semestreId = semestreId;
     }
 }

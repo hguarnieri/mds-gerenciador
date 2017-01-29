@@ -1,8 +1,10 @@
-package br.ufscar.mds.gerenciador.database;
+package br.ufscar.mds.gerenciador.database.helpers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import br.ufscar.mds.gerenciador.database.GerenciadorContract;
 
 /**
  * Created by Henrique on 14/01/2017.

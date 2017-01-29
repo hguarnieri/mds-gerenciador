@@ -1,8 +1,10 @@
-package br.ufscar.mds.gerenciador.database;
+package br.ufscar.mds.gerenciador.database.helpers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import br.ufscar.mds.gerenciador.database.GerenciadorContract;
 
 /**
  * Created by gabri on 22/01/2017.
@@ -26,7 +28,7 @@ public class AtividadeDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + GerenciadorContract.AtividadeEntry.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Atividades.db";
 
     public AtividadeDbHelper(Context context) {
