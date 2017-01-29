@@ -475,8 +475,8 @@ public class DbInterface {
         Curso curso = new Curso();
 
         curso.setId(cursor.getInt(0));
-        curso.setNome(cursor.getString(1));
-        curso.setSemestreId(cursor.getInt(2));
+        curso.setSemestreId(cursor.getInt(1));
+        curso.setNome(cursor.getString(2));
         curso.setHorario1(cursor.getString(3));
         curso.setHorario2(cursor.getString(4));
 
