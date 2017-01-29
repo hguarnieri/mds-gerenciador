@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.List;
 import java.util.Random;
 
 import br.ufscar.mds.gerenciador.R;
+import br.ufscar.mds.gerenciador.data.Curso;
 
 /**
  * Created by Henrique on 14/01/2017.
@@ -18,24 +20,26 @@ import br.ufscar.mds.gerenciador.R;
 public class ListViewCursosAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
+    private static List<Curso> courses;
 
-    public ListViewCursosAdapter(Context context) {
+    public ListViewCursosAdapter(Context context, List<Curso> courses) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.courses = courses;
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return courses.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return position;
+    public Curso getItem(int position) {
+        return courses.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return courses.get(position).getId();
     }
 
     public class Holder {
@@ -51,8 +55,9 @@ public class ListViewCursosAdapter extends BaseAdapter {
         holder.textViewTitulo = (TextView) rowView.findViewById(R.id.list_curso_item_titulo);
         holder.textViewHorario = (TextView) rowView.findViewById(R.id.list_curso_item_horario);
 
-
-
+        holder.textViewTitulo.setText(courses.get(position).getNome());
+        holder.textViewHorario.setText(courses.get(position).getHorario1() + '\n');
+        holder.textViewHorario.append(courses.get(position).getHorario2());
 
         return rowView;
     }

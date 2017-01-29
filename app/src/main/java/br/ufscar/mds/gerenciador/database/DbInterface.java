@@ -400,7 +400,7 @@ public class DbInterface {
         // Parameters
         String   whereClause = null;
         String[] whereArgs = null;
-        String sortOrder = GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA + "DESC";
+        String sortOrder = GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA + " DESC";
 
         // Aqui funciona assim:
         // 1: Assignment específico

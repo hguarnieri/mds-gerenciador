@@ -20,7 +20,7 @@ public class SemestreDbHelper extends SQLiteOpenHelper {
                     GerenciadorContract.SemestreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     GerenciadorContract.SemestreEntry.COLUMN_NAME_NOME + TEXT_TYPE + NOT_NULL_ENTRY + COMMA_SEP +
                     GerenciadorContract.SemestreEntry.COLUMN_NAME_ANO + TEXT_TYPE + COMMA_SEP +
-                    GerenciadorContract.SemestreEntry.COLUMN_NAME_PERIODO + TEXT_TYPE + COMMA_SEP + " )";
+                    GerenciadorContract.SemestreEntry.COLUMN_NAME_PERIODO + TEXT_TYPE + " )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + GerenciadorContract.SemestreEntry.TABLE_NAME;

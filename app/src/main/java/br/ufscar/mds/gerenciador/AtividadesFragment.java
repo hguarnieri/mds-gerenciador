@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.List;
+
+import br.ufscar.mds.gerenciador.data.Atividade;
+import br.ufscar.mds.gerenciador.database.DbInterface;
 import br.ufscar.mds.gerenciador.utils.ListViewAtividadesAdapter;
 
 public class AtividadesFragment extends Fragment {
@@ -20,9 +24,10 @@ public class AtividadesFragment extends Fragment {
         setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.view_atividades, container, false);
+        List<Atividade> activities =DbInterface.getAllFutureAssignments(getContext());
 
         ListView listViewAtividades = (ListView) view.findViewById(R.id.list_view_atividades);
-        listViewAtividades.setAdapter(new ListViewAtividadesAdapter(getContext()));
+        listViewAtividades.setAdapter(new ListViewAtividadesAdapter(getContext(),activities));
         listViewAtividades.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int myItemInt, long l) {
