@@ -1,5 +1,7 @@
 package br.ufscar.mds.gerenciador.data;
 
+import java.util.Date;
+
 /**
  * Created by gabri on 29/01/2017.
  */
@@ -9,12 +11,12 @@ public class Atividade {
     private int cursoId;
     private String titulo;
     private String detalhes;
-    private String data;
+    private Date data;
 
     public Atividade() {
     }
 
-    public Atividade(int id, int cursoId, String titulo, String detalhes, String data) {
+    public Atividade(int id, int cursoId, String titulo, String detalhes, Date data) {
         this.id = id;
         this.cursoId = cursoId;
         this.titulo = titulo;
@@ -54,11 +56,11 @@ public class Atividade {
         this.detalhes = detalhes;
     }
 
-    public String getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Date data) {
         this.data = data;
     }
 }
