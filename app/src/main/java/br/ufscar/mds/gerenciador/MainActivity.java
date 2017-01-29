@@ -90,6 +90,15 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
                         .show();
             }
         });
+
+        LinearLayout buttonAddSemester = (LinearLayout) findViewById(R.id.buttonAddSemester);
+        buttonAddSemester.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addSemesterActivity = new Intent(MainActivity.this,AddSemesterActivity.class);
+                startActivity(addSemesterActivity);
+            }
+        });
     }
 
     public void criarBotoesFlutuantes() {
