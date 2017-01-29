@@ -17,7 +17,7 @@ public class GerenciadorContract {
 
     public static class CursoEntry implements BaseColumns {
         public static final String TABLE_NAME = "cursos";
-        public static final String COLUMN_NAME_SEMESTRE_ID = "nome";
+        public static final String COLUMN_NAME_SEMESTRE_ID = "semestre_id";
         public static final String COLUMN_NAME_NOME = "nome";
         public static final String COLUMN_NAME_HORARIO1 = "horario1";
         public static final String COLUMN_NAME_HORARIO2 = "horario2";

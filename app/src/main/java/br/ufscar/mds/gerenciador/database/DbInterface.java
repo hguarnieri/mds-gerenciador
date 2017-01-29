@@ -50,6 +50,132 @@ public class DbInterface {
         }
     }
 
+    // Função de update do semestre
+    public static void updateSemester(Context context, Semestre semestre) {
+        ContentValues values      = new ContentValues();
+        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        SQLiteDatabase db         = dbHelper.getReadableDatabase();
+
+        values.put(GerenciadorContract.SemestreEntry.COLUMN_NAME_NOME,    semestre.getNome());
+        values.put(GerenciadorContract.SemestreEntry.COLUMN_NAME_ANO,     Integer.toString(semestre.getAno()));
+        values.put(GerenciadorContract.SemestreEntry.COLUMN_NAME_PERIODO, Integer.toString(semestre.getPeriodo()));
+
+        // Parameters
+        String   whereClause = GerenciadorContract.SemestreEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(semestre.getId())};
+
+        long rowsAffected = db.update(GerenciadorContract.SemestreEntry.TABLE_NAME, values, whereClause, whereArgs);
+
+        if (rowsAffected > 1 || rowsAffected == 0) {
+            Log.d("Gerenciador", "Erro ao modificar Semestre " + semestre.toString());
+        } else {
+            Log.d("Gerenciador", "Semestre modificado! " + semestre.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    // Função de salvamento do curso
+    public static void saveCourse(Context context, Curso course) {
+        ContentValues values      = new ContentValues();
+        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        SQLiteDatabase db         = dbHelper.getReadableDatabase();
+
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_SEMESTRE_ID, course.getSemestreId());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_NOME, course.getNome());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1, course.getHorario1());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2, course.getHorario2());
+
+        long newRowId = db.insert(GerenciadorContract.CursoEntry.TABLE_NAME, null, values);
+
+        if (newRowId == -1) {
+            Log.d("Gerenciador", "Erro ao salvar curso " + course.toString());
+        } else {
+            Log.d("Gerenciador", "Curso salvo! " + course.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    // Função de salvamento do curso
+    public static void updateCourse(Context context, Curso course) {
+        ContentValues values      = new ContentValues();
+        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        SQLiteDatabase db         = dbHelper.getReadableDatabase();
+
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_SEMESTRE_ID, course.getSemestreId());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_NOME, course.getNome());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1, course.getHorario1());
+        values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2, course.getHorario2());
+
+        // Parameters
+        String   whereClause = GerenciadorContract.CursoEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(course.getId())};
+
+        long rowsAffected = db.update(GerenciadorContract.CursoEntry.TABLE_NAME, values, whereClause, whereArgs);
+
+        if (rowsAffected > 1 || rowsAffected == 0) {
+            Log.d("Gerenciador", "Erro ao modificar Semestre " + course.toString());
+        } else {
+            Log.d("Gerenciador", "Semestre modificado! " + course.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    public static void saveAssignment(Context context, Atividade atividade) {
+        ContentValues values       = new ContentValues();
+        AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_CURSO_ID, atividade.getCursoId());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_TITULO, atividade.getTitulo());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_DETALHES, atividade.getDetalhes());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA, df.format(atividade.getData()));
+
+        long newRowId = db.insert(GerenciadorContract.AtividadeEntry.TABLE_NAME, null, values);
+
+        if (newRowId == -1) {
+            Log.d("Gerenciador", "Erro ao salvar atividade " + atividade.toString());
+        } else {
+            Log.d("Gerenciador", "Atividade salva! " + atividade.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    public static void updateAssignment(Context context, Atividade atividade) {
+        ContentValues values       = new ContentValues();
+        AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_CURSO_ID, atividade.getCursoId());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_TITULO, atividade.getTitulo());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_DETALHES, atividade.getDetalhes());
+        values.put(GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA, df.format(atividade.getData()));
+
+        // Parameters
+        String   whereClause = GerenciadorContract.AtividadeEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(atividade.getId())};
+
+        long rowsAffected = db.update(GerenciadorContract.AtividadeEntry.TABLE_NAME, values, whereClause, whereArgs);
+
+        if (rowsAffected > 1 || rowsAffected == 0) {
+            Log.d("Gerenciador", "Erro ao salvar atividade " + atividade.toString());
+        } else {
+            Log.d("Gerenciador", "Atividade salva! " + atividade.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
     public static Semestre getSemester(Context context, int ano, int periodo) {
         List<Semestre> semestres = getSemesters(context, ano, periodo);
 
@@ -230,7 +356,7 @@ public class DbInterface {
         AtividadeDbHelper dbHelper;
         dbHelper = new AtividadeDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         String[] tableColumns = {
                 GerenciadorContract.AtividadeEntry._ID,
