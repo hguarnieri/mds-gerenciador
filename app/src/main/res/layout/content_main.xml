@@ -134,6 +134,32 @@
                     android:layout_height="1dp"
                     android:background="@color/dark_gray" />
 
+                <LinearLayout
+                    android:id="@+id/buttonAddCourse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/ic_edit" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="bottom"
+                        android:text="@string/add_course"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/dark_gray" />
+
             </LinearLayout>
 
         </ScrollView>

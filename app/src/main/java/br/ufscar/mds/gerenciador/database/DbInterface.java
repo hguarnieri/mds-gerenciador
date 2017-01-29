@@ -441,6 +441,7 @@ public class DbInterface {
         Atividade atividade = new Atividade();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+
         atividade.setId(cursor.getInt(0));
         atividade.setTitulo(cursor.getString(1));
         try {
