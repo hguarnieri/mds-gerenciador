@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         buttonGoogleAgenda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Função vai aqui
-                Log.v(TAG,"Botão de login google clicado");
                 Intent googleLoginActivity = new Intent(MainActivity.this,CalendarConnectActivity.class);
                 startActivity(googleLoginActivity);
             }

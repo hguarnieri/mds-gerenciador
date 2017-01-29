@@ -16,8 +16,7 @@ public class SemestreDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + GerenciadorContract.SemestreEntry.TABLE_NAME + " (" +
-                    GerenciadorContract.SemestreEntry._ID + " INTEGER PRIMARY KEY," +
-                    GerenciadorContract.SemestreEntry.COLUMN_NAME_ID + INTEGER_TYPE + " AUTOINCREMENT" + COMMA_SEP +
+                    GerenciadorContract.SemestreEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     GerenciadorContract.SemestreEntry.COLUMN_NAME_NOME + TEXT_TYPE + NOT_NULL_ENTRY + COMMA_SEP +
                     GerenciadorContract.SemestreEntry.COLUMN_NAME_ANO + TEXT_TYPE + COMMA_SEP +
                     GerenciadorContract.SemestreEntry.COLUMN_NAME_PERIODO + TEXT_TYPE + COMMA_SEP + " )";
@@ -25,7 +24,7 @@ public class SemestreDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + GerenciadorContract.SemestreEntry.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Semestres.db";
 
     public SemestreDbHelper(Context context) {

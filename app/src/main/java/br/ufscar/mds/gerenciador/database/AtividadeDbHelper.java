@@ -15,19 +15,18 @@ public class AtividadeDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + GerenciadorContract.AtividadeEntry.TABLE_NAME + " (" +
-                    GerenciadorContract.AtividadeEntry._ID + " INTEGER PRIMARY KEY," +
-                    GerenciadorContract.AtividadeEntry.COLUMN_NAME_ID + INTEGER_TYPE + " AUTOINCREMENT" + COMMA_SEP +
+                    GerenciadorContract.AtividadeEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     GerenciadorContract.AtividadeEntry.COLUMN_NAME_CURSO_ID + INTEGER_TYPE + COMMA_SEP +
                     GerenciadorContract.AtividadeEntry.COLUMN_NAME_TITULO + TEXT_TYPE + NOT_NULL_ENTRY + COMMA_SEP +
                     GerenciadorContract.AtividadeEntry.COLUMN_NAME_DETALHES + TEXT_TYPE + COMMA_SEP +
                     GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA + TEXT_TYPE + COMMA_SEP +
                     "FOREIGN KEY(" + GerenciadorContract.AtividadeEntry.COLUMN_NAME_CURSO_ID + ") REFERENCES " +
-                            GerenciadorContract.CursoEntry.TABLE_NAME + "(" + GerenciadorContract.CursoEntry.COLUMN_NAME_ID + ") )";
+                            GerenciadorContract.CursoEntry.TABLE_NAME + "(" + GerenciadorContract.CursoEntry._ID + ") )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + GerenciadorContract.AtividadeEntry.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Atividades.db";
 
     public AtividadeDbHelper(Context context) {

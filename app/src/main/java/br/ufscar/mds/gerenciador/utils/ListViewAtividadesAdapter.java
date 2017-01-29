@@ -1,6 +1,9 @@
 package br.ufscar.mds.gerenciador.utils;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import java.util.Random;
 
 import br.ufscar.mds.gerenciador.R;
+import br.ufscar.mds.gerenciador.database.AtividadeDbHelper;
 
 /**
  * Created by Henrique on 14/01/2017.

@@ -15,8 +15,7 @@ public class CursoDbHelper extends SQLiteOpenHelper {
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + GerenciadorContract.CursoEntry.TABLE_NAME + " (" +
-                    GerenciadorContract.CursoEntry._ID + " INTEGER PRIMARY KEY," +
-                    GerenciadorContract.CursoEntry.COLUMN_NAME_ID + INTEGER_TYPE + " AUTOINCREMENT" + COMMA_SEP +
+                    GerenciadorContract.CursoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     GerenciadorContract.CursoEntry.COLUMN_NAME_NOME + TEXT_TYPE + NOT_NULL_ENTRY + COMMA_SEP +
                     GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO1 + TEXT_TYPE + COMMA_SEP +
                     GerenciadorContract.CursoEntry.COLUMN_NAME_HORARIO2 + TEXT_TYPE + COMMA_SEP + " )";
@@ -24,7 +23,7 @@ public class CursoDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + GerenciadorContract.CursoEntry.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Cursos.db";
 
     public CursoDbHelper(Context context) {
