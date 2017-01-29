@@ -12,4 +12,11 @@
     <string name="calendar_about">Você pode conectar a sua conta para que suas atividades sejam adicionadas ao seu Google Calendar</string>
     <string name="calendar_connect">Conectar Conta Google</string>
     <string name="calendar_connected">Você já está conectado</string>
+    <string name="sobre">Sobre</string>
+    <string name="google_agenda">Google Agenda</string>
+    <string name="add_semestre">Add Semester</string>
+    <string name="semester_name_hint">Nome</string>
+    <string name="semester_term_hint">Período</string>
+    <string name="semester_year_hint">Ano</string>
+    <string name="semester_bt">Adicionar Semestre</string>
 </resources>

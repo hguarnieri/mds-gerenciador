@@ -25,7 +25,12 @@
         </activity>
         <activity
             android:name=".CalendarConnectActivity"
-            android:label="Google Calendar API Android Quickstart" >
+            android:label="Google Calendar Link" >
+
+        </activity>
+        <activity
+            android:name=".AddSemesterActivity"
+            android:label="Add Semester" >
 
         </activity>
     </application>
