@@ -51,4 +51,14 @@ public class Semestre {
     public void setPeriodo(int periodo) {
         this.periodo = periodo;
     }
+
+    @Override
+    public String toString() {
+        return "Semestre{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", ano=" + ano +
+                ", periodo=" + periodo +
+                '}';
+    }
 }

@@ -63,4 +63,15 @@ public class Atividade {
     public void setData(Date data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "Atividade{" +
+                "id=" + id +
+                ", cursoId=" + cursoId +
+                ", titulo='" + titulo + '\'' +
+                ", detalhes='" + detalhes + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

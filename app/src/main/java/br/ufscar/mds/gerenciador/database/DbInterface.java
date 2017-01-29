@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -400,7 +401,7 @@ public class DbInterface {
         // Parameters
         String   whereClause = null;
         String[] whereArgs = null;
-        String sortOrder = GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA + " DESC";
+        String sortOrder = GerenciadorContract.AtividadeEntry.COLUMN_NAME_DATA + " ASC";
 
         // Aqui funciona assim:
         // 1: Assignment específico
@@ -444,9 +445,15 @@ public class DbInterface {
 
     private static Atividade cursorToAtividade(Cursor cursor){
         Atividade atividade = new Atividade();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         atividade.setId(cursor.getInt(0));
         atividade.setTitulo(cursor.getString(1));
-        atividade.setData(cursor.getString(2));
+        try {
+            atividade.setData(sdf.parse(cursor.getString(2)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         atividade.setCursoId(cursor.getInt(3));
         atividade.setDetalhes(cursor.getString(4));
 

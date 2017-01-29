@@ -60,4 +60,15 @@ public class Curso {
     public void setSemestreId(int semestreId) {
         this.semestreId = semestreId;
     }
+
+    @Override
+    public String toString() {
+        return "Curso{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", horario1='" + horario1 + '\'' +
+                ", horario2='" + horario2 + '\'' +
+                ", semestreId=" + semestreId +
+                '}';
+    }
 }

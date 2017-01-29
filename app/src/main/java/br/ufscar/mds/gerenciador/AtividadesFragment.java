@@ -24,10 +24,9 @@ public class AtividadesFragment extends Fragment {
         setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.view_atividades, container, false);
-        List<Atividade> activities =DbInterface.getAllFutureAssignments(getContext());
 
         ListView listViewAtividades = (ListView) view.findViewById(R.id.list_view_atividades);
-        listViewAtividades.setAdapter(new ListViewAtividadesAdapter(getContext(),activities));
+        listViewAtividades.setAdapter(new ListViewAtividadesAdapter(getContext()));
         listViewAtividades.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int myItemInt, long l) {
