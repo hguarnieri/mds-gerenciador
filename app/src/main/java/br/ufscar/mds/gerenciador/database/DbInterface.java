@@ -29,9 +29,7 @@ public class DbInterface {
     // Função de salvamento do semestre
     public static void saveSemester(Context context, Semestre semestre) {
         ContentValues values = new ContentValues();
-
-        SemestreDbHelper dbHelper;
-        dbHelper = new SemestreDbHelper(context);
+        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         values.put(GerenciadorContract.SemestreEntry.COLUMN_NAME_NOME, semestre.getNome());
@@ -79,7 +77,7 @@ public class DbInterface {
     // Função de salvamento do curso
     public static void saveCourse(Context context, Curso course) {
         ContentValues values      = new ContentValues();
-        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        CursoDbHelper dbHelper = new CursoDbHelper(context);
         SQLiteDatabase db         = dbHelper.getReadableDatabase();
 
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_SEMESTRE_ID, course.getSemestreId());
@@ -102,7 +100,7 @@ public class DbInterface {
     // Função de salvamento do curso
     public static void updateCourse(Context context, Curso course) {
         ContentValues values      = new ContentValues();
-        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        CursoDbHelper dbHelper = new CursoDbHelper(context);
         SQLiteDatabase db         = dbHelper.getReadableDatabase();
 
         values.put(GerenciadorContract.CursoEntry.COLUMN_NAME_SEMESTRE_ID, course.getSemestreId());
@@ -174,6 +172,39 @@ public class DbInterface {
             // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
             // context.sendBroadcast(i);
         }
+    }
+
+    public static void deleteSemester(Context context, Semestre semester) {
+        SemestreDbHelper dbHelper = new SemestreDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+
+        // Parameters
+        String   whereClause = GerenciadorContract.SemestreEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(semester.getId())};
+
+        db.delete(GerenciadorContract.SemestreEntry.TABLE_NAME, whereClause, whereArgs);
+    }
+
+    public static void deleteCourse(Context context, Curso curso) {
+        CursoDbHelper dbHelper = new CursoDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+
+        // Parameters
+        String   whereClause = GerenciadorContract.CursoEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(curso.getId())};
+
+        db.delete(GerenciadorContract.CursoEntry.TABLE_NAME, whereClause, whereArgs);
+    }
+
+    public static void deleteAssignment(Context context, Atividade assignment) {
+        AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+
+        // Parameters
+        String   whereClause = GerenciadorContract.AtividadeEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(assignment.getId())};
+
+        db.delete(GerenciadorContract.AtividadeEntry.TABLE_NAME, whereClause, whereArgs);
     }
 
     public static Semestre getSemester(Context context, int ano, int periodo) {
