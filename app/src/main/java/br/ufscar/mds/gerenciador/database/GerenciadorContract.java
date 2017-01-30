@@ -32,4 +32,10 @@ public class GerenciadorContract {
         public static final String COLUMN_NAME_DATA = "data";
     }
 
+    public static class ImageEntry implements BaseColumns {
+        public static final String TABLE_NAME = "imagens";
+        public static final String COLUMN_NAME_CAMINHO = "caminho";
+        public static final String COLUMN_NAME_CURSO_ID = "curso_id";
+    }
+
 }

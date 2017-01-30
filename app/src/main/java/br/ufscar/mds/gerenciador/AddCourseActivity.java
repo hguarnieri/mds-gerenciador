@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufscar.mds.gerenciador.data.Curso;
@@ -25,12 +26,13 @@ public class AddCourseActivity extends Activity {
     private EditText mCourseSchedule2;
     private Spinner mCourseSemesterId;
     private Button mCourseAdd;
+    List<Semestre> semesters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
-
+        semesters = DbInterface.getAllSemesters(getApplicationContext());
         mCourseName = (EditText) findViewById(R.id.et_course_name);
         mCourseSchedule1 = (EditText) findViewById(R.id.et_course_schedule1);
         mCourseSchedule2 = (EditText) findViewById(R.id.et_course_schedule2);
@@ -52,7 +54,8 @@ public class AddCourseActivity extends Activity {
                     course.setNome(mCourseName.getText().toString());
                     course.setHorario1(mCourseSchedule1.getText().toString());
                     course.setHorario2(mCourseSchedule2.getText().toString());
-                    course.setSemestreId(Integer.parseInt(mCourseSemesterId.getSelectedItem().toString()));
+                    int semestreId = mCourseSemesterId.getSelectedItemPosition();
+                    course.setSemestreId(semesters.get(semestreId).getId());
                     course.setId(0);
                     DbInterface.saveCourse(getApplicationContext(),course);
                     onBackPressed();
@@ -63,8 +66,12 @@ public class AddCourseActivity extends Activity {
 
     void renderSpinner(){
         mCourseSemesterId = (Spinner) findViewById(R.id.sp_course_semesterid);
-        List<Semestre> semesters = DbInterface.getAllSemesters(getApplicationContext());
-        ArrayAdapter spinnerArrayAdpter =  new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, semesters);
+
+        List<String> foos = new ArrayList<String>();
+        for (Semestre obj : semesters) {
+            foos.add(obj.getNome());
+        }
+        ArrayAdapter spinnerArrayAdpter =  new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, foos);
         mCourseSemesterId.setAdapter(spinnerArrayAdpter);
     }
 }

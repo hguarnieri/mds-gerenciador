@@ -16,9 +16,11 @@ import java.util.List;
 
 import br.ufscar.mds.gerenciador.data.Atividade;
 import br.ufscar.mds.gerenciador.data.Curso;
+import br.ufscar.mds.gerenciador.data.Nota;
 import br.ufscar.mds.gerenciador.data.Semestre;
 import br.ufscar.mds.gerenciador.database.helpers.AtividadeDbHelper;
 import br.ufscar.mds.gerenciador.database.helpers.CursoDbHelper;
+import br.ufscar.mds.gerenciador.database.helpers.ImageDbHelper;
 import br.ufscar.mds.gerenciador.database.helpers.SemestreDbHelper;
 
 /**
@@ -479,4 +481,132 @@ public class DbInterface {
         return curso;
     }
 
+    public static Nota getImage(Context context, int imageId) {
+        List<Nota> notas = getImages(context, null, imageId);
+
+        if (notas.size() == 1) {
+            return notas.get(0);
+        } else if (notas.size() >= 1) {
+            System.out.println("Erro! Mais de um assignment com o mesmo id encontrado!");
+            return null;
+        } else {
+            return null;
+        }
+    }
+
+    private static List<Nota> getImages(Context context, Integer courseId, Integer imageId) {
+        List<Nota> lista = new ArrayList<Nota>();
+
+        ImageDbHelper dbHelper;
+        dbHelper = new ImageDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] tableColumns = {
+                GerenciadorContract.ImageEntry._ID,
+                GerenciadorContract.ImageEntry.COLUMN_NAME_CAMINHO,
+                GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID
+        };
+
+        // Parameters
+        String   whereClause = null;
+        String[] whereArgs = null;
+        String sortOrder = GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID + " ASC";
+
+        // Aqui funciona assim:
+        // 1: Assignment específico
+        // 2: Caso contrário, busca por:
+        // 2.1: Assignments de um curso com intervalo de datas (courseId, initialDate, finalDate)
+        // 2.2: Assignments de um curso com id específico (courseId)
+        // 2.3: Assignments de um intervalo de datas (initialDate e finalDate)
+        if (imageId != null) {
+            whereClause = GerenciadorContract.ImageEntry._ID + " = ?";
+            whereArgs   = new String[]{ Integer.toString(imageId) };
+        } else if (courseId != null) {
+            whereClause = GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID + " = ?";
+            whereArgs   = new String[]{ Integer.toString(courseId) };
+        }
+
+        Cursor cursor = db.query(
+                GerenciadorContract.ImageEntry.TABLE_NAME,
+                tableColumns,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+        while (cursor.moveToNext()){
+            lista.add(cursorToNota(cursor));
+        }
+
+        dbHelper.close();
+
+        return lista;
+    }
+
+    private static Nota cursorToNota(Cursor cursor){
+        Nota nota = new Nota();
+
+        nota.setId(cursor.getInt(0));
+        nota.setCaminho(cursor.getString(1));
+        nota.setCursoId(cursor.getInt(2));
+
+        return nota;
+    }
+
+    public static void saveImage(Context context, Nota note) {
+        ContentValues values       = new ContentValues();
+        ImageDbHelper dbHelper = new ImageDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+
+        values.put(GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID, note.getCursoId());
+        values.put(GerenciadorContract.ImageEntry.COLUMN_NAME_CAMINHO, note.getCaminho());
+
+        long newRowId = db.insert(GerenciadorContract.ImageEntry.TABLE_NAME, null, values);
+
+        if (newRowId == -1) {
+            Log.d("Gerenciador", "Erro ao salvar nota " + note.toString());
+        } else {
+            Log.d("Gerenciador", "Nota salva! " + note.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    public static void updateImage(Context context, Nota note) {
+        ContentValues values       = new ContentValues();
+        AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
+        SQLiteDatabase db          = dbHelper.getReadableDatabase();
+
+        values.put(GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID, note.getCursoId());
+        values.put(GerenciadorContract.ImageEntry.COLUMN_NAME_CAMINHO, note.getCaminho());
+
+        // Parameters
+        String   whereClause = GerenciadorContract.AtividadeEntry._ID + " = ?";
+        String[] whereArgs   = new String[]{ Integer.toString(note.getId())};
+
+        long rowsAffected = db.update(GerenciadorContract.ImageEntry.TABLE_NAME, values, whereClause, whereArgs);
+
+        if (rowsAffected > 1 || rowsAffected == 0) {
+            Log.d("Gerenciador", "Erro ao salvar nota " + note.toString());
+        } else {
+            Log.d("Gerenciador", "Nota salva! " + note.toString());
+            // TODO: Adicionar à lista
+            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
+            // context.sendBroadcast(i);
+        }
+    }
+
+    public static void deleteImage(Context context, Nota note) {
+        AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // Parameters
+        String whereClause = GerenciadorContract.ImageEntry._ID + " = ?";
+        String[] whereArgs = new String[]{Integer.toString(note.getId())};
+
+        db.delete(GerenciadorContract.ImageEntry.TABLE_NAME, whereClause, whereArgs);
+    }
 }
