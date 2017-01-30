@@ -24,4 +24,6 @@
     <string name="course_schedule2_hint">Horario Segunda Aula</string>
     <string name="course_add_bt">Adicionar Curso</string>
     <string name="add_course">Add Course</string>
+    <string name="course_selection">Selecione Curso</string>
+    <string name="course_dialog_hint">Selecione um curso</string>
 </resources>
