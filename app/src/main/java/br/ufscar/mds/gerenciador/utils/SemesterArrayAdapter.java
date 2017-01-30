@@ -31,7 +31,7 @@ public class SemesterArrayAdapter extends ArrayAdapter<Semestre> {
 
         TextView tvName = (TextView) rowView.findViewById(R.id.semester_adapter_name);
 
-        tvName.setText(semester.getAno() + "/" + semester.getPeriodo());
+        tvName.setText(semester.getNome() + "-" + semester.getAno() + "/" + semester.getPeriodo());
 
         return rowView;
     }
