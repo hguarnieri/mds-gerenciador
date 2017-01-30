@@ -85,7 +85,5 @@ public class CursoActivity extends Activity {
                 Log.v("AtividadesFragment","Selecionado o item: " + myItemInt);
             }
         });
-
-
     }
 }

@@ -127,7 +127,7 @@ public class DbInterface {
         }
     }
 
-    public static void saveAssignment(Context context, Atividade atividade) {
+    public static long saveAssignment(Context context, Atividade atividade) {
         ContentValues values       = new ContentValues();
         AtividadeDbHelper dbHelper = new AtividadeDbHelper(context);
         SQLiteDatabase db          = dbHelper.getReadableDatabase();
@@ -144,10 +144,11 @@ public class DbInterface {
             Log.d("Gerenciador", "Erro ao salvar atividade " + atividade.toString());
         } else {
             Log.d("Gerenciador", "Atividade salva! " + atividade.toString());
-            // TODO: Adicionar à lista
-            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
-            // context.sendBroadcast(i);
+            Intent i = new Intent("refreshAssignment");
+            context.sendBroadcast(i);
         }
+
+        return newRowId;
     }
 
     public static void updateAssignment(Context context, Atividade atividade) {

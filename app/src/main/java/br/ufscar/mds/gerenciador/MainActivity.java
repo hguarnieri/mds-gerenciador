@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
             @Override
             public void onClick(View view) {
                 //Nova atividade
-                //TODO (1) Adicionar nova atividade
+                Intent i = new Intent(MainActivity.this, AddAssignmentActivity.class);
+                startActivity(i);
             }
         });
 

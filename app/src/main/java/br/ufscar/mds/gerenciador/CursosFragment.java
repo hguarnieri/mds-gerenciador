@@ -1,6 +1,9 @@
 package br.ufscar.mds.gerenciador;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,26 +21,36 @@ import br.ufscar.mds.gerenciador.utils.ListViewCursosAdapter;
 
 public class CursosFragment extends Fragment {
 
+    BroadcastReceiver receiver;
+    ListView listViewCursos;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
         if (DbInterface.getAllCourses(getContext()).size() <= 0) {
-            Curso curso1 = new Curso(1, "Computação Gráfica", "Terça 14:00 às 16:00 - DC", "Terça 16:00 às 18:00 - DC");
-            Curso curso2 = new Curso(2, "Teoria dos Gráfos", "Segunda 08:00 às 10:00 - AT9 Sala 221", "Segunda 16:00 às 18:00 - AT9 Sala 222");
-            Curso curso3 = new Curso(3, "Metodologia de Desenvolvimento de Sistemas", "Segunda 08:00 às 10:00 - DC", "Segunda 10:00 às 12:00 - DC");
+            Curso curso1 = new Curso(1, "Computação Gráfica", "Terça 14:00 às 16:00 - DC", "Terça 16:00 às 18:00 - DC", 1, 0);
+            Curso curso2 = new Curso(2, "Teoria dos Gráfos", "Segunda 08:00 às 10:00 - AT9 Sala 221", "Segunda 16:00 às 18:00 - AT9 Sala 222", 1, 0);
+            Curso curso3 = new Curso(3, "Metodologia de Desenvolvimento de Sistemas", "Segunda 08:00 às 10:00 - DC", "Segunda 10:00 às 12:00 - DC", 2, 0);
 
             DbInterface.saveCourse(getContext(), curso1);
             DbInterface.saveCourse(getContext(), curso2);
             DbInterface.saveCourse(getContext(), curso3);
         }
 
-        final List<Curso> courses = DbInterface.getAllCourses(getContext());
         View view = inflater.inflate(R.layout.view_cursos, container, false);
 
-        ListView listViewCursos = (ListView) view.findViewById(R.id.list_view_cursos);
-        listViewCursos.setAdapter(new ListViewCursosAdapter(getContext(), courses));
-        listViewCursos.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+
+        return view;
+    }
+
+    private void refreshListView() {
+        final List<Curso> courses = DbInterface.getAllCourses(getContext());
+
+        this.listViewCursos = (ListView) getActivity().findViewById(R.id.list_view_cursos);
+        this.listViewCursos.setAdapter(new ListViewCursosAdapter(getContext(), courses));
+        this.listViewCursos.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 Bundle b = new Bundle();
@@ -48,8 +61,27 @@ public class CursosFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-        return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshListView();
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                refreshListView();
+            }
+        };
+
+        getActivity().registerReceiver(receiver, new IntentFilter("refreshCourses"));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(receiver);
+    }
 }

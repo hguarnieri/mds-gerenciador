@@ -15,11 +15,13 @@ public class Curso {
     public Curso() {
     }
 
-    public Curso(int id, String nome, String horario1, String horario2) {
+    public Curso(int id, String nome, String horario1, String horario2, int semestreId, int absences) {
         this.id = id;
         this.nome = nome;
         this.horario1 = horario1;
         this.horario2 = horario2;
+        this.semestreId = semestreId;
+        this.absences = absences;
     }
 
     public int getId() {
