@@ -69,7 +69,7 @@ public class AddCourseActivity extends Activity {
 
         List<String> foos = new ArrayList<String>();
         for (Semestre obj : semesters) {
-            foos.add(obj.getNome());
+            foos.add(obj.getNome()+ " " + obj.getAno() + "/" + obj.getPeriodo());
         }
         ArrayAdapter spinnerArrayAdpter =  new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, foos);
         mCourseSemesterId.setAdapter(spinnerArrayAdpter);
