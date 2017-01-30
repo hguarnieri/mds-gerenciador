@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
     private ActionBarDrawerToggle mDrawerToggle;
     private Toolbar toolbar;
 
-    static final int REQUEST_TAKE_PHOTO = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +148,8 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         fab_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+                //dispatchTakePictureIntent();
+                openCamera();
                 //TODO (2) Abrir camera para tirar nova foto
             }
         });
@@ -198,56 +199,21 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    String mCurrentPhotoPath;
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+
+
+    private void openCamera() {
+        Intent i = new Intent(MainActivity.this, CameraActivity.class);
+        startActivity(i);
     }
 
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                //...
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                Log.v(TAG,"PhotoFile: " + photoFile.toString()); //Log Photo Location
-                Nota note = new Nota();
-                note.setCaminho(photoFile.toString());
-                createNoteDialog(note);
-            }
-        }
-    }
+
 
     public void createNoteDialog(final Nota note){
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         LayoutInflater inflater = getLayoutInflater();
-//        CursoDbHelper dbHelper = new CursoDbHelper(getApplicationContext());
 
         final List<Curso> courses = DbInterface.getAllCourses(getApplicationContext());
         String[] names = new String[courses.size()];
