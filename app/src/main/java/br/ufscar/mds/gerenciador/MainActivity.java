@@ -1,14 +1,20 @@
 package br.ufscar.mds.gerenciador;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +36,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -133,6 +140,9 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         });
     }
 
+    private final int MY_REQUEST_CODE = 101;
+    private final int MY_REQUEST_WRITE_EXTERNAL_STORAGE = 102;
+
     public void criarBotoesFlutuantes() {
         FloatingActionButton fab_new = (FloatingActionButton) findViewById(R.id.fab_new);
         fab_new.setOnClickListener(new View.OnClickListener() {
@@ -148,11 +158,97 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         fab_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //dispatchTakePictureIntent();
-                openCamera();
+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_REQUEST_CODE);
+                }if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_REQUEST_WRITE_EXTERNAL_STORAGE);
+                }else{
+                    dispatchTakePictureIntent();
+                }
                 //TODO (2) Abrir camera para tirar nova foto
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_REQUEST_CODE || requestCode == MY_REQUEST_WRITE_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Now user should be able to use camera
+                dispatchTakePictureIntent();
+            }
+        }
+    }
+
+    private final int TAKE_PHOTO_CODE = 0;
+    private void dispatchTakePictureIntent(){
+        File photoFile = null;
+        try{
+            photoFile = createImageFile();
+        }catch (IOException ex){
+            Log.e(TAG,"Error creating file",ex);
+        }
+        if(photoFile != null){
+            Uri photoURI = FileProvider.getUriForFile(this,"br.ufscar.mds.gerenciador.android.fileprovider",photoFile);
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivityForResult(Intent.createChooser(cameraIntent,"Select Picture"), TAKE_PHOTO_CODE);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
+            Log.d(TAG, "Picture saved" + mCurrentPhotoPath );
+            //TODO Conectar Arquivo à uma nota e um curso
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Selecione curso");
+            final List<Curso> cursos = DbInterface.getAllCourses(getApplicationContext());
+            String[] nomeCursos = new String[cursos.size()];
+            for(int i = 0; i<cursos.size();i++){
+                nomeCursos[i] = cursos.get(i).getNome();
+            }
+
+            builder.setItems(nomeCursos, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Nota nota = new Nota();
+                    nota.setId(0);
+                    nota.setCursoId(cursos.get(which).getId());
+                    nota.setCaminho(mCurrentPhotoPath);
+                    DbInterface.saveImage(getApplicationContext(),nota);
+                }
+            });
+            builder.show();
+            galleryAddPic();
+        }
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     public void configurarActionBar() {
@@ -197,45 +293,6 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
 
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-
-
-
-
-    private void openCamera() {
-        Intent i = new Intent(MainActivity.this, CameraActivity.class);
-        startActivity(i);
-    }
-
-
-
-
-    public void createNoteDialog(final Nota note){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        LayoutInflater inflater = getLayoutInflater();
-
-        final List<Curso> courses = DbInterface.getAllCourses(getApplicationContext());
-        String[] names = new String[courses.size()];
-
-        List<String> foos = new ArrayList<String>();
-        int count = 0;
-        for (Curso obj : courses) {
-            names[count++] = obj.getNome();
-            foos.add(obj.getNome());
-        }
-        builder.setTitle(R.string.course_dialog_hint);
-        builder.setItems(foos.toArray(new String[foos.size()]), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                note.setCursoId(courses.get(i).getId());
-                note.setId(0);
-                DbInterface.saveImage(getApplicationContext(),note);
-                dialogInterface.dismiss();
-            }
-        });
-        builder.show();
-
     }
 
     @Override

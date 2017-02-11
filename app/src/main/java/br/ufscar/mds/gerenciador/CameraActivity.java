@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import br.ufscar.mds.gerenciador.utils.CameraView;
 public class CameraActivity extends Activity {
     private Camera mCamera = null;
     private CameraView mCameraView = null;
+
 
     //TAG
     private static final String TAG = "Gerenciador MDS";
@@ -87,13 +89,22 @@ public class CameraActivity extends Activity {
                         "com.example.android.fileprovider",
                         photoFile);
                 System.out.println(photoURI.getPath());
-                //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                //startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 //Log.v(TAG,"PhotoFile: " + photoFile.toString()); //Log Photo Location
                 //Nota note = new Nota();
                 //note.setCaminho(photoFile.toString());
                 //createNoteDialog(note);
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
+            Uri u;
+            u = data.getData();
+            System.out.println(u.toString());
         }
     }
 
