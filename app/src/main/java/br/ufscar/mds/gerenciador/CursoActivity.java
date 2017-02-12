@@ -1,6 +1,7 @@
 package br.ufscar.mds.gerenciador;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,7 @@ import br.ufscar.mds.gerenciador.utils.ListViewAtividadesAdapter;
  * Created by gabri on 29/01/2017.
  */
 
-public class CursoActivity extends Activity {
+public class    CursoActivity extends Activity {
 
     Curso course;
     TextView mTextViewTitulo;
@@ -53,6 +54,15 @@ public class CursoActivity extends Activity {
         mButtonClassNotes = (Button) findViewById(R.id.activity_curso_button_notas);
         mButtonIncreaseAbsence = (Button) findViewById(R.id.activity_curso_button_falta_add);
         mButtonDecreaseAbsence = (Button) findViewById(R.id.activity_curso_button_falta_dec);
+
+        mButtonClassNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CursoActivity.this,NotesActivity.class);
+                intent.putExtra("course-id",course.getId());
+                startActivity(intent);
+            }
+        });
 
         mButtonIncreaseAbsence.setOnClickListener(new View.OnClickListener() {
             @Override

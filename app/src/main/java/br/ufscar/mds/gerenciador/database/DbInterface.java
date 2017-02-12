@@ -495,7 +495,7 @@ public class DbInterface {
         }
     }
 
-    private static List<Nota> getImages(Context context, Integer courseId, Integer imageId) {
+    public static List<Nota> getImages(Context context, Integer courseId, Integer imageId) {
         List<Nota> lista = new ArrayList<Nota>();
 
         ImageDbHelper dbHelper;
@@ -514,11 +514,9 @@ public class DbInterface {
         String sortOrder = GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID + " ASC";
 
         // Aqui funciona assim:
-        // 1: Assignment específico
+        // 1: Nota específica
         // 2: Caso contrário, busca por:
-        // 2.1: Assignments de um curso com intervalo de datas (courseId, initialDate, finalDate)
-        // 2.2: Assignments de um curso com id específico (courseId)
-        // 2.3: Assignments de um intervalo de datas (initialDate e finalDate)
+        // 2.2: Notas de um curso com id específico (courseId)
         if (imageId != null) {
             whereClause = GerenciadorContract.ImageEntry._ID + " = ?";
             whereArgs   = new String[]{ Integer.toString(imageId) };
