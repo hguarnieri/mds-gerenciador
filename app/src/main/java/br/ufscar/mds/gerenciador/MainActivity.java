@@ -190,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
             Log.e(TAG,"Error creating file",ex);
         }
         if(photoFile != null){
-            Uri photoURI = FileProvider.getUriForFile(this,"br.ufscar.mds.gerenciador.android.fileprovider",photoFile);
+            Uri photoURI = Uri.fromFile(photoFile);
+//            Uri photoURI = FileProvider.getUriForFile(this,"br.ufscar.mds.gerenciador.android.fileprovider",photoFile);
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(Intent.createChooser(cameraIntent,"Select Picture"), TAKE_PHOTO_CODE);
@@ -239,7 +240,9 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "GerenciadorAcademico");
+        storageDir.mkdir();
+//                getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
