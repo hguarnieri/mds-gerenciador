@@ -41,7 +41,6 @@ public class CursosFragment extends Fragment {
         View view = inflater.inflate(R.layout.view_cursos, container, false);
 
 
-
         return view;
     }
 
@@ -77,6 +76,12 @@ public class CursosFragment extends Fragment {
         };
 
         getActivity().registerReceiver(receiver, new IntentFilter("refreshCourses"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override

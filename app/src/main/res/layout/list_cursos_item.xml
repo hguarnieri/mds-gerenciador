@@ -17,6 +17,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Sistemas Operacionais"/>
 
         <TextView
@@ -26,6 +27,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:textColor="@color/colorPrimaryDark"
             android:text="Segunda-feira: 16:00 às 18:00\nTerça-feira: 08:00 às 10:00"/>
 
     </LinearLayout>

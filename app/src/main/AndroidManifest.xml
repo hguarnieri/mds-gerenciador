@@ -58,12 +58,17 @@
         </activity>
         <activity
             android:name=".CursoActivity"
-            android:label="Course View" >
+            android:label="Curso" >
 
         </activity>
         <activity
             android:name=".NotesActivity"
-            android:label="Notes View" >
+            android:label="Notas de Aula" >
+
+        </activity>
+        <activity
+            android:name=".AtividadeActivity"
+            android:label="Atividade" >
 
         </activity>
     </application>

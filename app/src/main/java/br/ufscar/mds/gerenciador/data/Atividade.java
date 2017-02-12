@@ -1,5 +1,6 @@
 package br.ufscar.mds.gerenciador.data;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -62,6 +63,18 @@ public class Atividade {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getDataString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        try {
+            return sdf.format(this.getData());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return "";
     }
 
     @Override

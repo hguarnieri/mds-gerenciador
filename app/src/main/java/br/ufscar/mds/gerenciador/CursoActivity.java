@@ -1,9 +1,11 @@
 package br.ufscar.mds.gerenciador;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufscar.mds.gerenciador.data.Atividade;
@@ -35,6 +38,8 @@ public class    CursoActivity extends Activity {
     Button mButtonIncreaseAbsence;
     Button mButtonDecreaseAbsence;
     Button mButtonClassNotes;
+
+    List<Atividade> atividades = new ArrayList<Atividade>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +91,44 @@ public class    CursoActivity extends Activity {
         mTextViewHorarios.setText(this.course.getHorario1() + "\n" + this.course.getHorario2());
         mTextViewFaltas.setText("Número de faltas: " + this.course.getAbsences());
 
-        List<Atividade> atividades = DbInterface.getAllFutureAssignmentsByCourse(getApplicationContext(), courseId);
+        atividades = DbInterface.getAllFutureAssignmentsByCourse(getApplicationContext(), courseId);
         mListViewAtividades.setAdapter(new ListViewAtividadesAdapter(getApplicationContext(), atividades));
         mListViewAtividades.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int myItemInt, long l) {
-                //TODO Criar visualização da atividade e chamar ela
-                Log.v("AtividadesFragment","Selecionado o item: " + myItemInt);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Atividade atividade = atividades.get(position);
+                Intent i = new Intent(CursoActivity.this, AtividadeActivity.class);
+
+                Bundle b = new Bundle();
+                b.putInt("assignmentId", atividade.getId());
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
+        mListViewAtividades.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Atividade atividade = atividades.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(CursoActivity.this);
+                builder.setTitle("Atividade");
+                builder.setMessage("Confirma a remoção dessa atividade?\n" + atividade.getTitulo());
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DbInterface.deleteAssignment(getApplicationContext(), atividade);
+                    }
+                });
+                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return true;
             }
         });
     }

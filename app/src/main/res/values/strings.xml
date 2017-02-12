@@ -4,7 +4,7 @@
     <string name="openDrawer">Menu</string>
     <string name="closeDrawer">Menu</string>
     <string name="about_title">Sobre</string>
-    <string name="about_message">App desenvolvido para a aula de MDS</string>
+    <string name="about_message">App desenvolvido para a aula de MDS\nGrupo:\nHenrique Guarnieri\nGabriel Martins\nThalles Ferreira\nPedro Garcia</string>
     <string name="ok">OK</string>
     <string name="no_connection">Sem conexão de Internet</string>
     <string name="no_google_play">É preciso ter instalado Google Play Services</string>

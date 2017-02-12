@@ -2,11 +2,13 @@ package br.ufscar.mds.gerenciador;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +31,8 @@ public class AtividadesFragment extends Fragment {
 
     BroadcastReceiver receiver;
     ListView listViewAtividades;
+
+    List<Atividade> atividades = new ArrayList<Atividade>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,15 +71,46 @@ public class AtividadesFragment extends Fragment {
     }
 
     private void refreshListView() {
-        final List<Atividade> atividades = DbInterface.getAllFutureAssignments(getContext());
+        atividades = DbInterface.getAllFutureAssignments(getContext());
 
         listViewAtividades = (ListView) getActivity().findViewById(R.id.list_view_atividades);
         listViewAtividades.setAdapter(new ListViewAtividadesAdapter(getContext(), atividades));
         listViewAtividades.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int myItemInt, long l) {
-                //TODO Criar visualização da atividade e chamar ela
-                Log.v("AtividadesFragment","Selecionado o item: " + myItemInt);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Atividade atividade = atividades.get(position);
+                Intent i = new Intent(getActivity(), AtividadeActivity.class);
+
+                Bundle b = new Bundle();
+                b.putInt("assignmentId", atividade.getId());
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
+        listViewAtividades.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final Atividade atividade = atividades.get(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Atividade");
+                builder.setMessage("Confirma a remoção dessa atividade?\n" + atividade.getTitulo());
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DbInterface.deleteAssignment(getContext(), atividade);
+                    }
+                });
+                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return true;
             }
         });
     }
@@ -93,6 +129,12 @@ public class AtividadesFragment extends Fragment {
         };
 
         getActivity().registerReceiver(receiver, new IntentFilter("refreshAssignment"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override
