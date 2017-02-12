@@ -1,14 +1,11 @@
 package br.ufscar.mds.gerenciador;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +16,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,47 +27,44 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import br.ufscar.mds.gerenciador.data.Curso;
 import br.ufscar.mds.gerenciador.data.Nota;
 import br.ufscar.mds.gerenciador.database.DbInterface;
-import br.ufscar.mds.gerenciador.database.helpers.CursoDbHelper;
 import br.ufscar.mds.gerenciador.utils.SlidingTabLayout;
 
 public class MainActivity extends AppCompatActivity implements SlidingTabLayout.TabColorizer {
 
     //TAG
-    private static final String TAG = "Gerenciador MDS";
+    private final String TAG = "Gerenciador MDS";
+    private final int    TAKE_PHOTO_CODE = 0;
+    private final int    REQUEST_CODE_CAMERA = 101;
+    private final int    REQUEST_CODE_WRITE_EXTERNAL = 102;
+
     // Objetos que manipulam as tabs
     FragmentsAdapter mAdapter;
-    ViewPager mPager;
+    ViewPager        mPager;
     SlidingTabLayout tabs;
 
     // Objetos que manipulam o menu lateral e a ActionBar
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout          mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private Toolbar toolbar;
+    private Toolbar               toolbar;
 
-
+    String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,9 +133,6 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         });
     }
 
-    private final int MY_REQUEST_CODE = 101;
-    private final int MY_REQUEST_WRITE_EXTERNAL_STORAGE = 102;
-
     public void criarBotoesFlutuantes() {
         FloatingActionButton fab_new = (FloatingActionButton) findViewById(R.id.fab_new);
         fab_new.setOnClickListener(new View.OnClickListener() {
@@ -159,13 +149,12 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
             @Override
             public void onClick(View view) {
                 if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_REQUEST_CODE);
-                }if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_REQUEST_WRITE_EXTERNAL_STORAGE);
-                }else{
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+                } if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL);
+                } else{
                     dispatchTakePictureIntent();
                 }
-                //TODO (2) Abrir camera para tirar nova foto
             }
         });
     }
@@ -173,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_REQUEST_CODE || requestCode == MY_REQUEST_WRITE_EXTERNAL_STORAGE) {
+        if (requestCode == REQUEST_CODE_CAMERA || requestCode == REQUEST_CODE_WRITE_EXTERNAL) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Now user should be able to use camera
                 dispatchTakePictureIntent();
@@ -181,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         }
     }
 
-    private final int TAKE_PHOTO_CODE = 0;
     private void dispatchTakePictureIntent(){
         File photoFile = null;
         try{
@@ -194,20 +182,20 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
 //            Uri photoURI = FileProvider.getUriForFile(this,"br.ufscar.mds.gerenciador.android.fileprovider",photoFile);
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(Intent.createChooser(cameraIntent,"Select Picture"), TAKE_PHOTO_CODE);
+            startActivityForResult(Intent.createChooser(cameraIntent, "Select Picture"), TAKE_PHOTO_CODE);
         }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
-            Log.d(TAG, "Picture saved" + mCurrentPhotoPath );
-            //TODO Conectar Arquivo à uma nota e um curso
+            Log.d(TAG, "Picture saved" + mCurrentPhotoPath);
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Selecione curso");
             final List<Curso> cursos = DbInterface.getAllCourses(getApplicationContext());
             String[] nomeCursos = new String[cursos.size()];
-            for(int i = 0; i<cursos.size();i++){
+            for(int i = 0; i < cursos.size();i++){
                 nomeCursos[i] = cursos.get(i).getNome();
             }
 
@@ -234,15 +222,12 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         this.sendBroadcast(mediaScanIntent);
     }
 
-    String mCurrentPhotoPath;
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "GerenciadorAcademico");
         storageDir.mkdir();
-//                getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -306,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

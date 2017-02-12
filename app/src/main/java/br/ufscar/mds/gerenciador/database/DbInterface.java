@@ -211,6 +211,8 @@ public class DbInterface {
         String[] whereArgs   = new String[]{ Integer.toString(assignment.getId())};
 
         db.delete(GerenciadorContract.AtividadeEntry.TABLE_NAME, whereClause, whereArgs);
+        Intent i = new Intent("refreshAssignment");
+        context.sendBroadcast(i);
     }
 
     public static Semestre getSemester(Context context, int ano, int periodo) {
@@ -556,7 +558,7 @@ public class DbInterface {
 
     public static void saveImage(Context context, Nota note) {
         ContentValues values       = new ContentValues();
-        ImageDbHelper dbHelper = new ImageDbHelper(context);
+        ImageDbHelper dbHelper     = new ImageDbHelper(context);
         SQLiteDatabase db          = dbHelper.getReadableDatabase();
 
         values.put(GerenciadorContract.ImageEntry.COLUMN_NAME_CURSO_ID, note.getCursoId());
@@ -568,9 +570,6 @@ public class DbInterface {
             Log.d("Gerenciador", "Erro ao salvar nota " + note.toString());
         } else {
             Log.d("Gerenciador", "Nota salva! " + note.toString());
-            // TODO: Adicionar à lista
-            // Intent i = new Intent("refreshMainActivity"); // TODO: APLICAR O BROADCAST
-            // context.sendBroadcast(i);
         }
     }
 

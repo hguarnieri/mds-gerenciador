@@ -126,12 +126,11 @@ public class AddAssignmentActivity extends Activity{
         this.mAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAssignmentTitle.getText() == null) {
+                if (mAssignmentTitle.getText() == null || mAssignmentTitle.getText().toString().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "O campo título está vazio", Toast.LENGTH_SHORT).show();
                     mAssignmentTitle.setBackgroundColor(Color.RED);
-                } else if (mAssignmentDetalhes.getText() == null) {
-                    mAssignmentDetalhes.setBackgroundColor(Color.RED);
                 } else {
-                    String time = mAssignmentTime.getCurrentHour() + ":" +mAssignmentTime.getCurrentMinute() + ":00";
+                    String time = mAssignmentTime.getHour() + ":" +mAssignmentTime.getMinute() + ":00";
                     String date = mAssignmentDate.getYear() + "-" + (mAssignmentDate.getMonth() + 1) + "-"
                                 + mAssignmentDate.getDayOfMonth() + " " + time;
                     mDate = date;

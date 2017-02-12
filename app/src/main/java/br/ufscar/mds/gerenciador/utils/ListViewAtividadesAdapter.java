@@ -31,9 +31,6 @@ public class ListViewAtividadesAdapter extends BaseAdapter {
 
     public ListViewAtividadesAdapter(Context context, List<Atividade> atividades) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
-
         this.atividadeList = atividades;
     }
 
