@@ -41,7 +41,7 @@ public class CalendarConnectActivity extends Activity
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    private static final String[] SCOPES = { CalendarScopes.CALENDAR_READONLY };
+    private static final String[] SCOPES = { CalendarScopes.CALENDAR };
 
     /**
      * Create the main activity.
@@ -70,10 +70,10 @@ public class CalendarConnectActivity extends Activity
         });
 
 
-//        // Initialize credentials and service object.
-//        mCredential = GoogleAccountCredential.usingOAuth2(
-//                getApplicationContext(), Arrays.asList(SCOPES))
-//                .setBackOff(new ExponentialBackOff());
+        // Initialize credentials and service object.
+        mCredential = GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff());
     }
 
 
@@ -168,10 +168,11 @@ public class CalendarConnectActivity extends Activity
                             data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                     if (accountName != null) {
                         SharedPreferences settings =
-                                getPreferences(Context.MODE_PRIVATE);
+                                getSharedPreferences("GerenciadorPrefs",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString(PREF_ACCOUNT_NAME, accountName);
                         editor.apply();
+                        editor.commit();
                         mCredential.setSelectedAccountName(accountName);
                         getResultsFromApi();
                     }
