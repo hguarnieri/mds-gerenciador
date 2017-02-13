@@ -72,6 +72,8 @@
                 android:id="@+id/activity_add_assignment_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="0dp"
                 android:calendarViewShown="false" />
 
             <TextView

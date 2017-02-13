@@ -54,8 +54,11 @@ public class CalendarConnectActivity extends Activity
 
 
         mCallApiButton = (Button) findViewById(R.id.bt_calendar_connect);
-        String accountName = getPreferences(Context.MODE_PRIVATE)
-                .getString(PREF_ACCOUNT_NAME, null);
+        SharedPreferences settings =
+                getSharedPreferences("GerenciadorPrefs",Context.MODE_PRIVATE);
+        String accountName = settings.getString("accountName",null);
+//        String accountName = getPreferences(Context.MODE_PRIVATE)
+//                .getString(PREF_ACCOUNT_NAME, null);
         if (accountName != null) {
             mCallApiButton.setEnabled(false);
             mCallApiButton.setText(R.string.calendar_connected);
@@ -65,7 +68,7 @@ public class CalendarConnectActivity extends Activity
             public void onClick(View v) {
                 mCallApiButton.setEnabled(false);
                 getResultsFromApi();
-                mCallApiButton.setEnabled(true);
+//                mCallApiButton.setEnabled(true);
             }
         });
 

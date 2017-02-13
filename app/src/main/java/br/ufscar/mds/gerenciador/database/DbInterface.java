@@ -277,7 +277,7 @@ public class DbInterface {
         while (cursor.moveToNext()){
             lista.add(cursorToSemestre(cursor));
         }
-
+        cursor.close();
         dbHelper.close();
 
         return lista;
@@ -346,7 +346,7 @@ public class DbInterface {
         while (cursor.moveToNext()){
             lista.add(cursorToCurso(cursor));
         }
-
+        cursor.close();
         dbHelper.close();
 
         return lista;
@@ -436,7 +436,7 @@ public class DbInterface {
         while (cursor.moveToNext()){
             lista.add(cursorToAtividade(cursor));
         }
-
+        cursor.close();
         dbHelper.close();
 
         return lista;
@@ -540,7 +540,7 @@ public class DbInterface {
         while (cursor.moveToNext()){
             lista.add(cursorToNota(cursor));
         }
-
+        cursor.close();
         dbHelper.close();
 
         return lista;
