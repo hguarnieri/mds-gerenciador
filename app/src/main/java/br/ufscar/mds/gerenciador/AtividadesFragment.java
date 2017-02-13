@@ -29,6 +29,7 @@ import br.ufscar.mds.gerenciador.utils.ListViewCursosAdapter;
 
 public class AtividadesFragment extends Fragment {
 
+    private final String TAG = AtividadesFragment.class.getSimpleName();
     BroadcastReceiver receiver;
     ListView listViewAtividades;
 
@@ -53,9 +54,9 @@ public class AtividadesFragment extends Fragment {
             calendar3.setTime(new Date());
             calendar3.add(Calendar.DAY_OF_YEAR, 15);
 
-            Atividade atividade1 = new Atividade(1, 1, "Fazer o T1 de MDS", "Desenvolver as telas", calendar.getTime());
+            Atividade atividade1 = new Atividade(1, 3, "Fazer o T1 de MDS", "Desenvolver as telas", calendar.getTime());
             Atividade atividade2 = new Atividade(2, 1, "Fazer o T1 de CG", "Desenvolver o jogo", calendar2.getTime());
-            Atividade atividade3 = new Atividade(2, 1, "Fazer o T1 de Grafos", "Desenvolver os grafos", calendar3.getTime());
+            Atividade atividade3 = new Atividade(3, 2, "Fazer o T1 de Grafos", "Desenvolver os grafos", calendar3.getTime());
 
             DbInterface.saveAssignment(getContext(), atividade1);
             DbInterface.saveAssignment(getContext(), atividade2);
@@ -134,12 +135,20 @@ public class AtividadesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(receiver);
+        try{
+            getActivity().unregisterReceiver(receiver);
+        }catch (IllegalArgumentException ex){
+            Log.e(TAG,"Error",ex);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().unregisterReceiver(receiver);
+        try{
+            getActivity().unregisterReceiver(receiver);
+        }catch (IllegalArgumentException ex){
+            Log.e(TAG,"Error",ex);
+        }
     }
 }

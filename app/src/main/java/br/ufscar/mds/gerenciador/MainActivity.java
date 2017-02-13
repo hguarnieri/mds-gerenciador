@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements SlidingTabLayout.
         actionBar.setLogo(logo);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle("  " + "Gerenciador");
+        actionBar.setTitle("  " + "Facool");
     }
 
     public void criarTabs() {
